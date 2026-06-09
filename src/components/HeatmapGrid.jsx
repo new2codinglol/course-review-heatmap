@@ -3,7 +3,8 @@ import { getMetric } from '../lib/metrics'
 
 export function HeatmapGrid({ courses, semesters, statsMap, metric, onCellClick, loading }) {
   const m = getMetric(metric)
-  const cols = `minmax(11rem,1fr) repeat(${semesters.length}, minmax(2.5rem,1fr))`
+  const cols = `14rem repeat(${semesters.length}, 3.25rem)`
+  const gridStyle = { gridTemplateColumns: cols, gridAutoRows: '3.25rem' }
 
   if (loading) {
     return <div className="text-muted font-mono text-sm p-8">Loading heatmap…</div>
@@ -14,12 +15,13 @@ export function HeatmapGrid({ courses, semesters, statsMap, metric, onCellClick,
 
   return (
     <div className="overflow-x-auto border border-border rounded-lg">
-      <div className="grid min-w-max" style={{ gridTemplateColumns: cols }}>
+      <div className="grid min-w-max" style={gridStyle}>
         {/* header row */}
-        <div className="sticky left-0 bg-surface z-10 px-3 py-2 text-muted text-xs font-mono border-b border-border">course</div>
+        <div className="sticky left-0 bg-surface z-10 px-3 flex items-center text-muted text-xs font-mono border-b border-border">course</div>
         {semesters.map((s) => (
-          <div key={s.id} className="px-1 py-2 text-muted text-[10px] font-mono text-center border-b border-border">
-            {s.season.replace('Sem ', 'S')}<br />{String(s.year).slice(2)}
+          <div key={s.id} className="px-1 flex flex-col items-center justify-center text-muted text-[10px] font-mono text-center border-b border-border leading-tight">
+            <span>{s.season.replace('Sem ', 'S')}</span>
+            <span>'{String(s.year).slice(2)}</span>
           </div>
         ))}
         {/* body */}
@@ -35,15 +37,15 @@ export function HeatmapGrid({ courses, semesters, statsMap, metric, onCellClick,
 function Row({ course, semesters, statsMap, metric, onCellClick }) {
   return (
     <>
-      <div className="sticky left-0 bg-surface z-10 px-3 py-1 border-b border-border/50 flex flex-col justify-center">
+      <div className="sticky left-0 bg-surface z-10 px-3 border-b border-border/50 flex flex-col justify-center">
         <span className="font-mono text-accent text-xs">{course.code}</span>
-        <span className="text-muted text-[10px] truncate max-w-[9rem]">{course.name}</span>
+        <span className="text-muted text-[10px] truncate max-w-[11rem]">{course.name}</span>
       </div>
       {semesters.map((s, ci) => {
         const row = statsMap.get(`${course.id}:${s.id}`)
         const value = row ? Number(row[metric.statKey]) : null
         return (
-          <div key={s.id} className="border-b border-l border-border/30 fill-in"
+          <div key={s.id} className="h-full border-b border-l border-border/30 fill-in"
                style={{ animationDelay: `${ci * 40}ms` }}>
             <HeatmapCell
               value={value}
