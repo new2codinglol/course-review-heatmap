@@ -121,51 +121,61 @@ git commit -m "chore: scaffold Vite + React with Vitest"
 
 ---
 
-### Task 2: Configure Tailwind with OKLCH terminal theme
+### Task 2: Configure Tailwind v4 with OKLCH terminal theme
+
+> **Tailwind v4 note:** This project installed Tailwind **v4** (`^4.3.0`). v4 is CSS-first:
+> no `tailwind.config.js`, no `npx tailwindcss init`, no `@tailwind` directives, and no
+> separate `postcss.config.js` when using the official Vite plugin. Theme tokens are declared
+> in CSS inside an `@theme {}` block. Color tokens declared as `--color-<name>` automatically
+> generate the matching utilities (`--color-bg` → `bg-bg`/`text-bg`, etc.), so all the
+> `bg-bg` / `text-text` / `border-border` / `font-mono` class names used in later tasks work.
 
 **Files:**
-- Create: `tailwind.config.js`, `postcss.config.js`
-- Modify: `src/index.css`
+- Create: none (no config files needed with the Vite plugin)
+- Modify: `vite.config.js` (add the Tailwind plugin), `src/index.css`
+- Install: `@tailwindcss/vite`
 
-- [ ] **Step 1: Init Tailwind**
+- [ ] **Step 1: Install the official Tailwind v4 Vite plugin**
 
 ```bash
-npx tailwindcss init -p
+npm install -D @tailwindcss/vite
 ```
 
-- [ ] **Step 2: Configure `tailwind.config.js`**
+- [ ] **Step 2: Add the Tailwind plugin to `vite.config.js`**
 
+Edit `vite.config.js` so it reads exactly:
 ```js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
-  theme: {
-    extend: {
-      colors: {
-        bg:      'oklch(0.17 0.012 264)',   // tinted near-black
-        surface: 'oklch(0.22 0.014 264)',
-        border:  'oklch(0.30 0.016 264)',
-        text:    'oklch(0.93 0.01 264)',
-        muted:   'oklch(0.62 0.02 264)',
-        accent:  'oklch(0.78 0.16 75)',      // sharp amber accent
-      },
-      fontFamily: {
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-      },
-    },
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test/setup.js',
   },
-  plugins: [],
-}
+})
 ```
 
 - [ ] **Step 3: Replace `src/index.css`**
 
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-bg:      oklch(0.17 0.012 264);   /* tinted near-black */
+  --color-surface: oklch(0.22 0.014 264);
+  --color-border:  oklch(0.30 0.016 264);
+  --color-text:    oklch(0.93 0.01 264);
+  --color-muted:   oklch(0.62 0.02 264);
+  --color-accent:  oklch(0.78 0.16 75);     /* sharp amber accent */
+
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: Inter, system-ui, sans-serif;
+}
 
 :root { color-scheme: dark; }
 body { @apply bg-bg text-text font-sans antialiased; }
@@ -173,13 +183,13 @@ body { @apply bg-bg text-text font-sans antialiased; }
 
 - [ ] **Step 4: Smoke-test the theme**
 
-Replace `src/App.jsx` body with a single `<div className="p-8 font-mono text-accent">SECJ3553</div>` temporarily, run `npm run dev`, confirm the page is near-black with amber monospace text. Revert the temporary change.
+Temporarily set `src/App.jsx` to render a single `<div className="p-8 font-mono text-accent">SECJ3553</div>`, run `npm run dev`, confirm the page is near-black with amber monospace text and no console/build errors. Revert the temporary change.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add tailwind.config.js postcss.config.js src/index.css
-git commit -m "feat: add OKLCH terminal theme with Tailwind"
+git add vite.config.js src/index.css package.json package-lock.json
+git commit -m "feat: add OKLCH terminal theme with Tailwind v4"
 ```
 
 ---
