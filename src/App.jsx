@@ -31,7 +31,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
-      <header className="mb-6 flex items-start justify-between gap-3">
+      <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="font-mono text-accent text-xl">course_review_heatmap</h1>
           <p className="text-muted text-sm">Synthetic UTM-inspired data · {visibleCourses.length} courses</p>
