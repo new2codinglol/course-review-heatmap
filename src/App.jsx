@@ -6,6 +6,7 @@ import { HeatmapGrid } from './components/HeatmapGrid'
 import { MetricSwitcher } from './components/MetricSwitcher'
 import { FilterBar } from './components/FilterBar'
 import { Legend } from './components/Legend'
+import { CourseDrawer } from './components/CourseDrawer'
 
 export default function App() {
   const { courses, semesters, loading: cLoading, error: cErr } = useCourses()
@@ -13,7 +14,7 @@ export default function App() {
   const {
     metric, setMetric,
     faculty, setFaculty, department, setDepartment, clearFilters,
-    openCell,
+    openCell, selectedCell, closeCell,
   } = useAppStore()
 
   const visibleCourses = useMemo(() => courses.filter((c) =>
@@ -22,6 +23,8 @@ export default function App() {
   ), [courses, faculty, department])
 
   const error = cErr || sErr
+  const selCourse = selectedCell && courses.find((c) => c.id === selectedCell.courseId)
+  const selSemester = selectedCell && semesters.find((s) => s.id === selectedCell.semesterId)
 
   return (
     <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
@@ -59,6 +62,8 @@ export default function App() {
           <Legend metric={metric} />
         </>
       )}
+
+      <CourseDrawer course={selCourse} semester={selSemester} onClose={closeCell} />
     </div>
   )
 }
