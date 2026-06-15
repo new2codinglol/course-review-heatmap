@@ -72,7 +72,9 @@ export default function App() {
         </>
       )}
 
-      <CourseDrawer course={selCourse} semester={selSemester} onClose={closeCell} />
+      {selCourse && selSemester && (
+        <CourseDrawer course={selCourse} semester={selSemester} onClose={closeCell} />
+      )}
 
       {showForm && (
         <SubmitReviewForm

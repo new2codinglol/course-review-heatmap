@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSubmitReview } from '../hooks/useSubmitReview'
+import { useDialog } from '../hooks/useDialog'
 
 const blank = {
   course_id: '', semester_id: '',
@@ -10,6 +11,7 @@ const blank = {
 export function SubmitReviewForm({ courses, semesters, onSubmitted, onClose }) {
   const [form, setForm] = useState(blank)
   const { submit, status, errors } = useSubmitReview()
+  const dialogRef = useDialog(onClose)
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
   const num = 'bg-bg border border-border rounded px-2 py-1 w-full font-mono text-sm'
 
@@ -22,9 +24,9 @@ export function SubmitReviewForm({ courses, semesters, onSubmitted, onClose }) {
   return (
     <>
       <div className="fixed inset-0 bg-black/50 z-30" onClick={onClose} aria-hidden />
-      <form onSubmit={handleSubmit} role="dialog" aria-label="Submit review"
+      <form ref={dialogRef} onSubmit={handleSubmit} role="dialog" aria-modal="true" aria-label="Submit review"
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-40 w-full max-w-md
-                       bg-surface border border-border rounded-lg p-6 space-y-3 max-h-[90vh] overflow-y-auto">
+                       bg-surface border border-border rounded-lg p-6 space-y-3 max-h-[90vh] overflow-y-auto outline-none">
         <h2 className="font-mono text-accent">submit_review</h2>
 
         <Field label="Course" error={errors.course_id}>

@@ -11,6 +11,7 @@ export function useCellDetail(courseId, semesterId) {
     let active = true
     ;(async () => {
       setLoading(true)
+      setError(null)
       const { data, error } = await supabase
         .from('reviews').select('*')
         .eq('course_id', courseId).eq('semester_id', semesterId)
