@@ -39,3 +39,11 @@ PROGRESS.md
 
 # Playwright MCP scratch output (screenshots, traces)
 .playwright-mcp/
+
+# Internal planning / tooling artifacts (kept local, not for the public repo)
+COURSE_HEATMAP_PRD.md
+docs/superpowers/
+.mcp.json
+
+.vercel
+.env*
