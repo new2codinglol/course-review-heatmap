@@ -4,7 +4,7 @@ A dense, terminal-style heatmap of course reputation — **professor rating, GPA
 attendance** — across ~25 Malaysian-university courses and 8 semesters. Students read aggregated
 reputation at a glance and submit their own reviews.
 
-**Live demo:** _(deploying — link coming)_
+**Live demo:** https://course-review-heatmap.vercel.app
 
 ![Course Review Heatmap](docs/screenshot.png)
 
