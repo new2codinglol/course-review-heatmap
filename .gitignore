@@ -36,3 +36,6 @@ coverage/
 
 # Local handoff / internal notes (per workflow)
 PROGRESS.md
+
+# Playwright MCP scratch output (screenshots, traces)
+.playwright-mcp/
